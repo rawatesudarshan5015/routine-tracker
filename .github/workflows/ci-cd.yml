@@ -111,27 +111,7 @@ jobs:
         run: npm test --if-present
         continue-on-error: true
 
-  # Job 5: Deploy to Vercel (optional, for main branch)
-  deploy:
-    runs-on: ubuntu-latest
-    name: Deploy to Vercel
-    needs: [build, lint-and-type-check]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Deploy to Vercel
-        uses: vercel/action@master
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          github-comment: false
-        continue-on-error: true
-
-  # Job 6: Notify Status
+  # Job 5: Notify Status (Vercel deployment handled by Vercel's GitHub integration)
   notify:
     runs-on: ubuntu-latest
     name: Notify Status
