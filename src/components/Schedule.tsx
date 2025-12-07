@@ -26,6 +26,7 @@ export default function Schedule({ date, onActivityClick, onRefresh, activePlanI
 
   useEffect(() => {
     fetchActivities();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date, activePlanId]);
 
   const fetchActivities = async () => {
@@ -241,7 +242,7 @@ export default function Schedule({ date, onActivityClick, onRefresh, activePlanI
         {activities.length === 0 ? (
           <div className="text-center py-8 bg-white rounded-lg border-2 border-gray-200">
             <p className="text-gray-500">No activities scheduled for this day</p>
-            <p className="text-sm text-gray-400 mt-2">Click "Add Activity to Routine" to get started</p>
+            <p className="text-sm text-gray-400 mt-2">Click &quot;Add Activity to Routine&quot; to get started</p>
           </div>
         ) : (
           <div className="grid gap-4">
