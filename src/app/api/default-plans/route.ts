@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connect';
 import UserPlan from '@/lib/db/models/UserPlan';
 import ActivityBlock from '@/lib/db/models/ActivityBlock';
@@ -7,7 +7,7 @@ import { cookies } from 'next/headers';
 import { Types } from 'mongoose';
 import { DEFAULT_PLANS } from '@/lib/db/seeds/defaultPlans';
 
-async function authenticateUser(request: NextRequest) {
+async function authenticateUser() {
   const cookieStore = await cookies();
   const token = cookieStore.get('auth-token')?.value;
 

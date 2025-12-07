@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connect';
 import User from '@/lib/db/models/User';
 import { hashPassword, comparePasswords } from '@/lib/auth/password';
-import { createToken, setAuthCookie } from '@/lib/auth/jwt';
+import { createToken } from '@/lib/auth/jwt';
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
 
       // Create new user
       const hashedPassword = await hashPassword(password);
-      const user = await User.create({
+      await User.create({
         email,
         password: hashedPassword,
       });

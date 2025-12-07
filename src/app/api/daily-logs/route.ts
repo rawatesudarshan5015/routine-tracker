@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connect';
 import DailyLog from '@/lib/db/models/DailyLog';
 import { verifyToken } from '@/lib/auth/jwt';
 import { cookies } from 'next/headers';
 import { Types } from 'mongoose';
 
-async function authenticateUser(request: NextRequest) {
+async function authenticateUser() {
   const cookieStore = await cookies();
   const token = cookieStore.get('auth-token')?.value;
 

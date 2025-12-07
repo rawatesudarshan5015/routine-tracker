@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connect';
 import ActivityBlock from '@/lib/db/models/ActivityBlock';
 import { verifyToken } from '@/lib/auth/jwt';
 import { cookies } from 'next/headers';
 
-async function authenticateUser(request: NextRequest) {
+async function authenticateUser() {
   const cookieStore = await cookies();
   const token = cookieStore.get('auth-token')?.value;
 

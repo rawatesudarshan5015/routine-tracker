@@ -1,8 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken, clearAuthCookie } from '@/lib/auth/jwt';
-import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     const response = NextResponse.json(
       { message: 'Logged out successfully' },
