@@ -1,0 +1,25 @@
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "nodeVersion": "18.x",
+  "env": [
+    {
+      "key": "MONGODB_URI",
+      "value": "@MONGODB_URI"
+    },
+    {
+      "key": "JWT_SECRET",
+      "value": "@JWT_SECRET"
+    },
+    {
+      "key": "NODE_ENV",
+      "value": "production"
+    },
+    {
+      "key": "NEXTAUTH_URL",
+      "value": "@NEXTAUTH_URL"
+    }
+  ]
+}
