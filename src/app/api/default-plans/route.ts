@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connect';
 import UserPlan from '@/lib/db/models/UserPlan';
 import ActivityBlock from '@/lib/db/models/ActivityBlock';
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
 // Copy a default plan for the user
 export async function POST(request: NextRequest) {
   try {
-    const user = await authenticateUser(request);
+    const user = await authenticateUser();
     await dbConnect();
 
     const body = await request.json();

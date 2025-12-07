@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connect';
 import ActivityBlock from '@/lib/db/models/ActivityBlock';
 import { verifyToken } from '@/lib/auth/jwt';
@@ -22,7 +22,7 @@ async function authenticateUser() {
 
 export async function GET(request: NextRequest) {
   try {
-    await authenticateUser(request);
+    await authenticateUser();
     await dbConnect();
 
     const { searchParams } = new URL(request.url);
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    await authenticateUser(request);
+    await authenticateUser();
     await dbConnect();
 
     const body = await request.json();

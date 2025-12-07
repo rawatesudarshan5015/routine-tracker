@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db/connect';
 import DailyLog from '@/lib/db/models/DailyLog';
 import { verifyToken } from '@/lib/auth/jwt';
@@ -23,7 +23,7 @@ async function authenticateUser() {
 
 export async function GET(request: NextRequest) {
   try {
-    const user = await authenticateUser(request);
+    const user = await authenticateUser();
     await dbConnect();
 
     const { searchParams } = new URL(request.url);
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const user = await authenticateUser(request);
+    const user = await authenticateUser();
     await dbConnect();
 
     const body = await request.json();
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
-    const user = await authenticateUser(request);
+    const user = await authenticateUser();
     await dbConnect();
 
     const body = await request.json();
@@ -143,7 +143,7 @@ export async function PATCH(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const user = await authenticateUser(request);
+    const user = await authenticateUser();
     await dbConnect();
 
     const { searchParams } = new URL(request.url);

@@ -6,11 +6,10 @@ import { Plus, X } from 'lucide-react';
 interface ScheduleProps {
   date: Date;
   onActivityClick: (block: any) => void;
-  onRefresh: () => void;
   activePlanId: string | null;
 }
 
-export default function Schedule({ date, onActivityClick, onRefresh, activePlanId }: ScheduleProps) {
+export default function Schedule({ date, onActivityClick, activePlanId }: ScheduleProps) {
   const [activities, setActivities] = useState<any[]>([]);
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

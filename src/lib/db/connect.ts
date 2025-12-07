@@ -2,7 +2,8 @@ import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) {
+// Allow builds without MONGODB_URI (for build-time only)
+if (!MONGODB_URI && process.env.NODE_ENV === 'production' && !process.env.VERCEL_ENV) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
 }
 
@@ -13,6 +14,10 @@ if (!cached) {
 }
 
 async function dbConnect() {
+  if (!MONGODB_URI) {
+    throw new Error('MONGODB_URI is not defined');
+  }
+
   if (cached.conn) {
     return cached.conn;
   }

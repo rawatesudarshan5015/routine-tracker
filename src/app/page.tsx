@@ -29,25 +29,11 @@ interface ActivityBlock {
   description: string;
 }
 
-interface DailyLog {
-  id: string;
-  userId: string;
-  logDate: string;
-  activityBlockId: string;
-  completed: boolean;
-  actualStartTime?: string;
-  actualEndTime?: string;
-  notes?: string;
-  energyLevel?: number;
-}
-
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedBlock, setSelectedBlock] = useState<ActivityBlock | null>(null);
-  const [selectedLog, setSelectedLog] = useState<DailyLog | undefined>(undefined);
   const [view, setView] = useState<View>('schedule');
-  const [refreshKey, setRefreshKey] = useState(0);
   const [activePlanId, setActivePlanId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -95,10 +81,6 @@ export default function App() {
     if (planId) {
       setView('schedule');
     }
-  };
-
-  const handleRefresh = () => {
-    setRefreshKey((prev) => prev + 1);
   };
 
   if (loading) {
@@ -192,34 +174,32 @@ export default function App() {
         <main className="p-6">
           {view === 'schedule' && (
             <Schedule
-              key={refreshKey}
               date={selectedDate}
               onActivityClick={setSelectedBlock}
-              onRefresh={handleRefresh}
               activePlanId={activePlanId}
             />
           )}
           {view === 'summary' && (
             <DailySummaryForm
-              key={refreshKey}
+
               date={selectedDate}
-              onRefresh={handleRefresh}
+
             />
           )}
           {view === 'daily-report' && (
-            <DailyReport key={refreshKey} date={selectedDate} />
+            <DailyReport date={selectedDate} />
           )}
           {view === 'weekly-report' && (
-            <WeeklyReport key={refreshKey} date={selectedDate} />
+            <WeeklyReport date={selectedDate} />
           )}
           {view === 'plans' && (
             <PlansManager
-              key={refreshKey}
+
               onPlanSelect={handlePlanSelect}
-              onRefresh={handleRefresh}
+
             />
           )}
-          {view === 'history' && <History key={refreshKey} />}
+          {view === 'history' && <History />}
         </main>
       </div>
 
@@ -229,7 +209,7 @@ export default function App() {
           block={selectedBlock}
           date={selectedDate}
           onClose={() => setSelectedBlock(null)}
-          onRefresh={handleRefresh}
+
         />
       )}
     </div>

@@ -7,7 +7,7 @@ import { verifyToken } from '@/lib/auth/jwt';
 import { cookies } from 'next/headers';
 import { Types } from 'mongoose';
 
-async function authenticateUser(request: NextRequest) {
+async function authenticateUser() {
   const cookieStore = await cookies();
   const token = cookieStore.get('auth-token')?.value;
 
@@ -25,7 +25,7 @@ async function authenticateUser(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    const user = await authenticateUser(request);
+    const user = await authenticateUser();
     await dbConnect();
 
     const { searchParams } = new URL(request.url);
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const user = await authenticateUser(request);
+    const user = await authenticateUser();
     await dbConnect();
 
     const body = await request.json();
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
-    const user = await authenticateUser(request);
+    const user = await authenticateUser();
     await dbConnect();
 
     const body = await request.json();
@@ -136,7 +136,7 @@ export async function PATCH(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const user = await authenticateUser(request);
+    const user = await authenticateUser();
     await dbConnect();
 
     const { searchParams } = new URL(request.url);

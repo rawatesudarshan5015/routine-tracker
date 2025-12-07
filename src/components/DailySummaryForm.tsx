@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 
 interface DailySummaryFormProps {
   date: Date;
-  onRefresh: () => void;
+  
 }
 
-export default function DailySummaryForm({ date, onRefresh }: DailySummaryFormProps) {
+export default function DailySummaryForm({ date, }: DailySummaryFormProps) {
   const [formData, setFormData] = useState({
     dsaProblems: 0,
     projectHours: 0,
@@ -39,7 +39,7 @@ export default function DailySummaryForm({ date, onRefresh }: DailySummaryFormPr
       if (!response.ok) throw new Error('Failed to save summary');
 
       alert('Summary saved successfully!');
-      onRefresh();
+      
     } catch (error) {
       console.error('Error saving summary:', error);
       alert('Failed to save summary');

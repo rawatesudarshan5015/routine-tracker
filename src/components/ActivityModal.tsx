@@ -7,10 +7,10 @@ interface ActivityModalProps {
   block: any;
   date: Date;
   onClose: () => void;
-  onRefresh: () => void;
+  
 }
 
-export default function ActivityModal({ block, date, onClose, onRefresh }: ActivityModalProps) {
+export default function ActivityModal({ block, date, onClose }: ActivityModalProps) {
   const [loading, setLoading] = useState(false);
   const [notes, setNotes] = useState('');
   const [energyLevel, setEnergyLevel] = useState(3);
@@ -37,7 +37,7 @@ export default function ActivityModal({ block, date, onClose, onRefresh }: Activ
 
       if (!response.ok) throw new Error('Failed to log activity');
 
-      onRefresh();
+      
       onClose();
     } catch (error) {
       console.error('Error logging activity:', error);

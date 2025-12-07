@@ -5,10 +5,10 @@ import { Copy, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
 
 interface PlansManagerProps {
   onPlanSelect: (planId: string | null) => void;
-  onRefresh: () => void;
+  
 }
 
-export default function PlansManager({ onPlanSelect, onRefresh }: PlansManagerProps) {
+export default function PlansManager({ onPlanSelect }: PlansManagerProps) {
   const [plans, setPlans] = useState<any[]>([]);
   const [defaultPlans, setDefaultPlans] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
