@@ -35,11 +35,36 @@ export default function App() {
   const [selectedBlock, setSelectedBlock] = useState<ActivityBlock | null>(null);
   const [view, setView] = useState<View>('schedule');
   const [activePlanId, setActivePlanId] = useState<string | null>(null);
+  const [activePlanName, setActivePlanName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     checkSession();
   }, []);
+
+  useEffect(() => {
+    // Load saved plan from database after user is authenticated
+    if (user) {
+      loadUserPreference();
+    }
+  }, [user]);
+
+  const loadUserPreference = async () => {
+    try {
+      const response = await fetch('/api/user-preference');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.selectedPlanId) {
+          console.log('Loading saved plan from database:', data.selectedPlanId);
+          setActivePlanId(data.selectedPlanId);
+          setActivePlanName(data.selectedPlanName);
+          setView('schedule');
+        }
+      }
+    } catch (error) {
+      console.error('Error loading user preference:', error);
+    }
+  };
 
   const checkSession = async () => {
     try {
@@ -58,6 +83,8 @@ export default function App() {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
       setUser(null);
+      setActivePlanId(null);
+      setActivePlanName(null);
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -75,11 +102,35 @@ export default function App() {
     setSelectedDate(newDate);
   };
 
-  const handlePlanSelect = (planId: string | null) => {
+  const handlePlanSelect = (planId: string | null, planName?: string) => {
     setActivePlanId(planId);
-    // Automatically switch to schedule view when a plan is selected
+    setActivePlanName(planName || null);
+    
+    // Save selected plan to database and localStorage
     if (planId) {
+      // Save to database
+      fetch('/api/user-preference', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ planId, planName }),
+      }).catch(error => console.error('Error saving plan preference:', error));
+      
+      // Also save to localStorage as backup
+      localStorage.setItem('selectedPlanId', planId);
+      if (planName) {
+        localStorage.setItem('selectedPlanName', planName);
+      }
+      
+      // Automatically switch to schedule view when a plan is selected
       setView('schedule');
+    } else {
+      // Clear from database
+      fetch('/api/user-preference', { method: 'DELETE' })
+        .catch(error => console.error('Error clearing plan preference:', error));
+      
+      // Clear from localStorage
+      localStorage.removeItem('selectedPlanId');
+      localStorage.removeItem('selectedPlanName');
     }
   };
 
@@ -107,6 +158,9 @@ export default function App() {
             <div>
               <h1 className="text-3xl font-bold text-gray-800">Schedule Tracker</h1>
               <p className="text-sm text-gray-600">{user.email}</p>
+              {activePlanName && (
+                <p className="text-sm text-blue-600 font-semibold mt-1">📋 Plan: {activePlanName}</p>
+              )}
             </div>
             <button
               onClick={handleSignOut}

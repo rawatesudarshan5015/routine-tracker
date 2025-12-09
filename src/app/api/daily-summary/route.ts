@@ -34,13 +34,25 @@ export async function GET(request: NextRequest) {
     let query: any = { userId: new Types.ObjectId(user.userId) };
 
     if (date) {
+      // Parse date and get start and end of day
       const logDate = new Date(date);
-      logDate.setHours(0, 0, 0, 0);
-      query.logDate = logDate;
-    } else if (startDate && endDate) {
+      logDate.setUTCHours(0, 0, 0, 0);
+      const nextDay = new Date(logDate);
+      nextDay.setUTCDate(nextDay.getUTCDate() + 1);
+      
       query.logDate = {
-        $gte: new Date(startDate),
-        $lte: new Date(endDate),
+        $gte: logDate,
+        $lt: nextDay,
+      };
+    } else if (startDate && endDate) {
+      const start = new Date(startDate);
+      start.setUTCHours(0, 0, 0, 0);
+      const end = new Date(endDate);
+      end.setUTCHours(23, 59, 59, 999);
+      
+      query.logDate = {
+        $gte: start,
+        $lte: end,
       };
     }
 
@@ -82,10 +94,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Parse date properly - handle both formats (YYYY-MM-DD string and ISO string)
+    const dateObj = new Date(logDate);
+    dateObj.setUTCHours(0, 0, 0, 0);
+
     // Check if summary already exists for this date
+    const startOfDay = new Date(dateObj);
+    startOfDay.setUTCHours(0, 0, 0, 0);
+    const endOfDay = new Date(dateObj);
+    endOfDay.setUTCHours(23, 59, 59, 999);
+
     const existing = await DailySummary.findOne({
       userId: new Types.ObjectId(user.userId),
-      logDate: new Date(logDate),
+      logDate: {
+        $gte: startOfDay,
+        $lt: endOfDay,
+      },
     });
 
     if (existing) {
@@ -112,7 +136,7 @@ export async function POST(request: NextRequest) {
     // Create new
     const summary = await DailySummary.create({
       userId: new Types.ObjectId(user.userId),
-      logDate: new Date(logDate),
+      logDate: dateObj,
       dsaProblems,
       projectHours,
       commitsPushed,
@@ -121,9 +145,10 @@ export async function POST(request: NextRequest) {
       mockInterviews,
       energyRating,
       blocker,
-      top3Priorities,
+      top3Priorities: top3Priorities.filter((p: string) => p.trim()),
     });
 
+    console.log('Daily summary created:', summary);
     return NextResponse.json(summary, { status: 201 });
   } catch (error: any) {
     console.error('Daily summary error:', error);

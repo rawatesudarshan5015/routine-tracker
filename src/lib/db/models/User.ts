@@ -3,6 +3,8 @@ import mongoose, { Schema, Document } from 'mongoose';
 export interface IUser extends Document {
   email: string;
   password: string;
+  selectedPlanId?: string;
+  selectedPlanName?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,6 +26,14 @@ const userSchema = new Schema<IUser>(
       required: [true, 'Please provide a password'],
       minlength: 6,
       select: false,
+    },
+    selectedPlanId: {
+      type: String,
+      default: null,
+    },
+    selectedPlanName: {
+      type: String,
+      default: null,
     },
   },
   {

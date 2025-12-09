@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Copy, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
 
 interface PlansManagerProps {
-  onPlanSelect: (planId: string | null) => void;
+  onPlanSelect: (planId: string | null, planName?: string) => void;
   
 }
 
@@ -223,7 +223,7 @@ export default function PlansManager({ onPlanSelect }: PlansManagerProps) {
                   </div>
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => onPlanSelect(plan._id)}
+                      onClick={() => onPlanSelect(plan._id, plan.name)}
                       className="px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors"
                     >
                       Select

@@ -119,8 +119,10 @@ export default function Schedule({ date, onActivityClick, activePlanId }: Schedu
 
   if (!activePlanId) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-500 mb-4">Please select a plan first</p>
+      <div className="text-center py-12 bg-white rounded-lg border-2 border-gray-200 p-8">
+        <p className="text-xl text-gray-600 mb-4">📋 No Plan Selected</p>
+        <p className="text-gray-500 mb-6">Please select a plan from the Plans tab to view and manage your routine</p>
+        <div className="text-sm text-gray-400">Your routine will appear here once you select a plan</div>
       </div>
     );
   }
